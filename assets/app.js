@@ -379,6 +379,8 @@ showScreen('screen-home');
   });
   function toggleDevMode(){
     if(!devMode()){
+      // Overwrites real progress with 100% — ask first, candidates share this build.
+      if(!confirm('Включить dev-режим? Текущий прогресс будет заменён на 100% по всем модулям.')) return;
       const p = {};
       MODULES.forEach(m => { p[m.id] = { passed: true, score: 100 }; });
       saveProgress(p);
@@ -387,6 +389,7 @@ showScreen('screen-home');
       renderHome();
       alert('🔓 Dev mode ON — all modules unlocked, DST shortcut visible');
     } else {
+      if(!confirm('Выключить dev-режим? Сохранённый прогресс будет очищен.')) return;
       localStorage.removeItem(DEVKEY);
       localStorage.removeItem(PKEY);
       showDevBadge(false);
